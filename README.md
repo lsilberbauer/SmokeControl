@@ -15,3 +15,12 @@ That's why I decided to write my own, server based web-app.
 * Fan control (via raspberry pi shield)
 
 
+.h2 Installation
+
+.h3 Raspberry Pi
+
+* Update Sources: sudo apt-get update
+* Install dependencies: sudo apt-get install python3 git python3-pip
+* Install setup tools:  sudo pip3 install --upgrade setuptools
+* Install modules: pip3 install xmltodict matplotlib
+* Download repository: git clone https://github.com/lsilberbauer/SmokeControl.git
