@@ -37,8 +37,8 @@ while True:
         break
     except TimeoutError:
         print("Timout Occured")
-    #except:
-    #    print("Unexpected error:", sys.exc_info()[0])
+    except:
+        print("Unexpected error:", sys.exc_info()[0])
 
 file_handle.close()
 
