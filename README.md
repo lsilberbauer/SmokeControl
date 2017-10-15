@@ -24,3 +24,4 @@ That's why I decided to write my own, server based web-app.
 * Install setup tools:  sudo pip3 install --upgrade setuptools
 * Install modules: pip3 install xmltodict matplotlib
 * Download repository: git clone https://github.com/lsilberbauer/SmokeControl.git
+(not fully working yet)

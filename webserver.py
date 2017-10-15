@@ -36,17 +36,22 @@ class testHTTPServer_RequestHandler(BaseHTTPRequestHandler):
         self.send_header('Content-type', 'text/html')
         self.end_headers()
 
-        # Generate plot        
-        ax1.clear()    
-        ax1.plot(timestamps, probe1_temps)
-        ax1.plot(timestamps, probe2_temps)
+        # Generate plots
+        ax_short_term.clear()
+        ax_short_term.plot(timestamps[-100:], probe1_temps[-100:])
+        ax_short_term.plot(timestamps[-100:], probe2_temps[-100:])
+        
+        ax_full_term.clear()    
+        ax_full_term.plot(timestamps, probe1_temps)
+        ax_full_term.plot(timestamps, probe2_temps)
 
         # Send message back to client
         message = "<html><meta http-equiv='refresh' content='5'><head><title>ThermoGraph</title></head><body>\r\n"
         message += "<p>Probe 1: " + str(float(probe1_temps[len(probe1_temps) - 1])) + " &#8451</p>\r\n"
         message += "<p>Probe 2: " + str(float(probe2_temps[len(probe2_temps) - 1])) + " &#8451</p>\r\n"
         message += "<p>Last Update " + str(int((datetime.datetime.now() - timestamps[len(timestamps) -1]).total_seconds())) +" seconds ago</p>"
-        message += mpld3.fig_to_html(fig)
+        message += "<h4>Short Term</h4>" + mpld3.fig_to_html(fig_short_term)
+        message += "<h4>Full Term</h4>" + mpld3.fig_to_html(fig_full_term)
         message += "</html>"
         # Write content as utf-8 data
         self.wfile.write(bytes(message, "utf8"))
@@ -68,8 +73,11 @@ if len(sys.argv) == 1:
     print("Usage: webserver.py name_of_log_file.csv")
     sys.exit(0)
 
-fig = plt.figure()
-ax1 = fig.add_subplot(1,1,1)
+fig_short_term = plt.figure()
+ax_short_term = fig_short_term.add_subplot(1,1,1)
+
+fig_full_term = plt.figure()
+ax_full_term = fig_full_term.add_subplot(1,1,1)
 
 run()
 
