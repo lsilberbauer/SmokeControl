@@ -25,7 +25,7 @@ class testHTTPServer_RequestHandler(BaseHTTPRequestHandler):
         probe2_temps = []
         
         for row in reader:     
-            timestamps.append(row[0])
+            timestamps.append(datetime.datetime.strptime(row[0], "%Y-%m-%d %H:%M:%S.%f"))
             probe1_temps.append(row[1])
             probe2_temps.append(row[2])                        
             
@@ -38,14 +38,14 @@ class testHTTPServer_RequestHandler(BaseHTTPRequestHandler):
 
         # Generate plot        
         ax1.clear()    
-        ax1.plot(probe1_temps)
-        ax1.plot(probe2_temps)
+        ax1.plot(timestamps, probe1_temps)
+        ax1.plot(timestamps, probe2_temps)
 
         # Send message back to client
-        message = "<html><meta http-equiv='refresh' content='3'><head><title>ThermoGraph</title></head><body>\r\n"
+        message = "<html><meta http-equiv='refresh' content='5'><head><title>ThermoGraph</title></head><body>\r\n"
         message += "<p>Probe 1: " + str(float(probe1_temps[len(probe1_temps) - 1])) + " &#8451</p>\r\n"
         message += "<p>Probe 2: " + str(float(probe2_temps[len(probe2_temps) - 1])) + " &#8451</p>\r\n"
-        message += "<p>Last Update " + str(int((datetime.datetime.now() - datetime.datetime.strptime(timestamps[len(timestamps) -1], "%Y-%m-%d %H:%M:%S.%f")).total_seconds())) +" seconds ago</p>"
+        message += "<p>Last Update " + str(int((datetime.datetime.now() - timestamps[len(timestamps) -1]).total_seconds())) +" seconds ago</p>"
         message += mpld3.fig_to_html(fig)
         message += "</html>"
         # Write content as utf-8 data
